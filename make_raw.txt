@@ -1,0 +1,40 @@
+Malan Tutorial
+
+http://nifty.stanford.edu/2010/malan-csi/
+
+
+Instructions for Teacher
+
+    Obtain a digital camera and a memory card (that you don't mind erasing). We happened to use CompactFlash, but most any type should suffice.
+    Zero the memory card (so that students aren't confused by extraneous bytes). Odds are Linux users know how to do this; allow me to suggest that Mac users and PC users use a Mac for simplicity:
+        Connect the memory card to a Mac running OS X 10.4 or higher via a memory card reader.
+        Open Applications → Utilities → Disk Utility.
+        In Disk Utility's left-hand pane, click the memory card's icon. (If the memory card has an indented child partition, be sure to click the parent.)
+        Click the Erase tab in Disk Utility's right-hand pane.
+        Select MS-DOS (FAT) next to Format.
+        Next to Name, type CARD.
+        Click Security Options....
+        Select Zero Out Data then OK.
+        Select Erase... and then Erase when prompted.
+        Quit Disk Utility and drag the memory card's icon from the desktop to the Trash to unmount it.
+    Insert the memory card into the digital camera and go take some pictures!
+    Make a "forensic image" of the memory card with dd. Odds are Linux users know how to do this too; allow me to suggest that Mac users and PC users again use a Mac for simplicity:
+        Connect the memory card to a Mac running OS X 10.4 or higher via a memory card reader.
+        Open Applications → Utilities → Terminal.
+        Execute the below at the prompt:
+        mount
+        Among the lines of output should be one for your memory card (i.e., /Volumes/CARD) like the below:
+        /dev/disk2s1 on /Volumes/CARD (msdos, local, nodev, nosuid, noowners)
+        Take note of the name of the card's "device file" (e.g., /dev/disk2s1).
+        Execute the below at the prompt to determine how many 512B blocks are being used by your photos:
+        df Among the lines of output should be one for your memory card (e.g., /dev/disk2s1) like the below:
+        Filesystem    512-blocks      Used Available Capacity  Mounted on
+        /dev/disk2s1    31270976   6020992  25249984      20%  /Volumes/CARD
+        Take note of that number (e.g., 6020992).
+        Execute the below at the prompt to umount the card's volume:
+        diskutil unmount /Volumes/CARD
+        Do not physically remove the card from the Mac, though.
+        Execute the below at the prompt to copy the first, e.g. 6020992 blocks from the card to a new file on your desktop called card.raw:
+        dd if=/dev/disk6s1 of=$HOME/Desktop/card.raw bs=512 count=6020992
+        For the curious, if denotes "input file," of denotes "output file," and bs denotes "block size." Take care not to transpose if and of, else you may have to take another stroll across campus!
+    Distribute card.raw to your students along with the instructions for students below (or some variant thereof)!
